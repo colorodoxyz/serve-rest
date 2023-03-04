@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/colorodoxyz/serve-rest/src/helper"
+	"github.com/colorodoxyz/serve-rest/src/jwtMiddleware"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/exp/maps"
 )
@@ -24,7 +25,7 @@ func login(ctxt *gin.Context) {
 	}
 
 	if account.Username == helper.AdminUser && account.Password == helper.AdminPassword {
-		token, tokenErr := jwtservice.generateToken(account.Username)
+		token, tokenErr := jwtMiddleware.GenerateToken(account.Username)
 		if tokenErr != nil {
 			ctxt.JSON(http.StatusBadRequest, gin.H{"error": tokenErr.Error()})
 			return
@@ -43,7 +44,7 @@ func login(ctxt *gin.Context) {
  * }
  */
 func storeKeyValue(ctxt *gin.Context) {
-	jwtservice.validateJwt(ctxt)
+	jwtMiddleware.ValidateJwt(ctxt)
 
 	var keyValuePair helper.KeyValue
 
@@ -61,7 +62,7 @@ func storeKeyValue(ctxt *gin.Context) {
  * Return all KeyValue pairs as a JSON array of key-value structs
  */
 func getAllKeyValuePairs(ctxt *gin.Context) {
-	jwtservice.validateJwt(ctxt)
+	jwtMiddleware.ValidateJwt(ctxt)
 
 	mapVals := maps.Values(store)
 	log.Printf("Retrieving all key-value pairs: %s\n", mapVals)
@@ -72,7 +73,7 @@ func getAllKeyValuePairs(ctxt *gin.Context) {
  * Get specific key-value pair by key path variable
  */
 func getKeyValueByKey(ctxt *gin.Context) {
-	jwtservice.validateJwt(ctxt)
+	jwtMiddleware.ValidateJwt(ctxt)
 
 	key := ctxt.Param("key")
 	if keyVal, ok := store[key]; ok {
@@ -86,7 +87,7 @@ func getKeyValueByKey(ctxt *gin.Context) {
 }
 
 func deleteKeyValueByKey(ctxt *gin.Context) {
-	jwtservice.validateJwt(ctxt)
+	jwtMiddleware.ValidateJwt(ctxt)
 
 	key := ctxt.Param("key")
 	if keyVal, ok := store[key]; ok {

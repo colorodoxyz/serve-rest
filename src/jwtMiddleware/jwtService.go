@@ -1,4 +1,4 @@
-package jwtservice
+package jwtMiddleware
 
 import (
 	"errors"
@@ -18,7 +18,7 @@ const (
 /**
  * Validate the json web token provided in authorization header
  */
-func validateJwt(ctxt *gin.Context) error {
+func ValidateJwt(ctxt *gin.Context) error {
 	bearerToken := ctxt.Request.Header.Get("Authorization")
 	splitToken := strings.Split(bearerToken, " ")
 	if len(splitToken) == 2 && splitToken[0] == "Bearer" {
@@ -43,7 +43,7 @@ func validateJwt(ctxt *gin.Context) error {
 /**
  * Generate JWT token to match the username passed in (admin)
  */
-func generateToken(username string) (string, error) {
+func GenerateToken(username string) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["authorized"] = true
 	claims["id"] = username
