@@ -1,14 +1,21 @@
-#all: clean client server test
-all: server test
+all: clean client server test
+
+clean:
+	rm -rf build
 
 cleanCli:
 	rm -rf build/client
+
 cleanServ:
 	rm -rf build/server
-client: cleanCli
-	mkdir -p build/client
+
+client:
+	mkdir -p build/client/scripts
+	cp -r testingJsons build/client
+	cp scripts/client/* build/client/scripts
 	go build -o build/client/client.out src/client/client.go
-server: cleanServ
+
+server:
 	mkdir -p build/server/scripts/certificates
 	cp scripts/server/* build/server/scripts
 	go build -o build/server/server.out src/server/server.go

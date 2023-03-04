@@ -10,10 +10,17 @@ type KeyValue struct {
 	Value string `json:"value"`
 }
 
+type BearerToken struct {
+	Type, Token string
+}
+
 const (
 	AdminUser     = "admin"
 	AdminPassword = "admin"
 	Url           = "localhost:5001"
 	ServerUrl     = "https://" + Url
 	MissingKeyMsg = "Key not found"
+	LoginApi      = "/api/login"
+	KeyValueApi   = "/api/key"
+	Auth          = "Authorization"
 )
