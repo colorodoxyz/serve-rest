@@ -1,5 +1,9 @@
 package jwtMiddleware
 
+/**
+ * JWT based authentication package that generates and validates JSON web tokens
+ */
+
 import (
 	"errors"
 	"fmt"

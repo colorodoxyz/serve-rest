@@ -1,5 +1,13 @@
 package main
 
+/**
+ * A TLS enabled server that maintains a basic REST API at /api/keys, enabling
+ * the read, write, and delete of Key-Value pairs
+ *
+ * The endpoint is secured using a JSON web token that is provided via the login
+ * endpoint at /api/login
+ */
+
 import (
 	"log"
 	"net/http"
@@ -86,6 +94,10 @@ func getKeyValueByKey(ctxt *gin.Context) {
 	}
 }
 
+/**
+ * Delete the key found at /api/keys/{key}
+ * If no Key-Value is stored under that key, don't error out, but return a 204 status
+ */
 func deleteKeyValueByKey(ctxt *gin.Context) {
 	jwtMiddleware.ValidateJwt(ctxt)
 
@@ -118,5 +130,8 @@ func main() {
 
 	log.Printf("About to listen on port 5001, go to %s", helper.ServerUrl)
 
+	// NOTE: Long term, a certificate authority to sign the cert used, rather
+	// than generating one in a script would be ideal, but that would require
+	// client side changes as well to support the x509 certificate pool
 	router.RunTLS(helper.Url, "scripts/certificates/serverCert.crt", "scripts/serverCert.key")
 }

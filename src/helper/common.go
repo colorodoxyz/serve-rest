@@ -1,5 +1,9 @@
 package helper
 
+/**
+ * Helper file to contain structs and constants used throught the repo
+ */
+
 type Account struct {
 	Username string `json:"Username"`
 	Password string `json:"Password"`

@@ -1,5 +1,9 @@
 package main
 
+/**
+ * client.go is used in a testing capacity on the server (server.go)
+ */
+
 import (
 	"bytes"
 	"encoding/json"
@@ -54,6 +58,10 @@ func readFile(fileName string) ([]helper.KeyValue, error) {
 	return KVArray, nil
 }
 
+/**
+ * This function is added due to test_delete.json, and is used to read a json file into
+ * an array of strings
+ */
 func readFileStringArray(fileName string) ([]string, error) {
 	file, err := os.Open("testingJsons/" + fileName)
 	var jsonStrs []string
@@ -97,6 +105,13 @@ func test_SetAndGet(cli http.Client) error {
 	return nil
 }
 
+/**
+ * A test on the overwrite functionality at /api/keys/{key}
+ * First checks that the key to be overwritten is there, then checks that the
+ * key-value objects are distinct.
+ * After the checks, the POST is performed to do the overwrite, and one final GET
+ * is used to confirm the change
+ */
 func test_overwrite(cli http.Client) error {
 	log.Println("Running test_overwrite")
 
