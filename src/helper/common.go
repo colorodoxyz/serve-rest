@@ -13,4 +13,6 @@ type KeyValue struct {
 const (
 	AdminUser     = "admin"
 	AdminPassword = "admin"
+	Url           = "localhost:5001"
+	ServerUrl     = "http://" + Url
 )
