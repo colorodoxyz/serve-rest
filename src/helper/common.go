@@ -15,4 +15,5 @@ const (
 	AdminPassword = "admin"
 	Url           = "localhost:5001"
 	ServerUrl     = "http://" + Url
+	MissingKeyMsg = "Key not found"
 )

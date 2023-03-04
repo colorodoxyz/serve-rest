@@ -1,4 +1,5 @@
 #all: clean client server test
+all: server test
 
 cleanCli:
 	rm -rf build/client
@@ -10,4 +11,5 @@ client: cleanCli
 server: cleanServ
 	mkdir -p build/server
 	go build -o build/server/server.out src/server/server.go
-#test:
+test:
+	docker-compose up

@@ -1,0 +1,12 @@
+version: '3.5'
+services:
+  server:
+    network_mode: host
+    container_name: http-server
+    image: golang:1.20.1-bullseye
+    volumes:
+      - ./build/server:/server
+    working_dir: /server
+    command: ./server.out
+    ports:
+      - '5001:5001'
