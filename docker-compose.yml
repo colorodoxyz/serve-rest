@@ -7,6 +7,6 @@ services:
     volumes:
       - ./build/server:/server
     working_dir: /server
-    command: ./server.out
+    command: bash -c "./scripts/generateServerCerts.sh && ./server.out"
     ports:
       - '5001:5001'

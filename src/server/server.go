@@ -82,5 +82,5 @@ func main() {
 
 	log.Printf("About to listen on port 5001, go to %s", helper.ServerUrl)
 
-	router.Run(helper.Url)
+	router.RunTLS(helper.Url, "scripts/certificates/serverCert.crt", "scripts/serverCert.key")
 }
