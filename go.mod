@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/gin-gonic/gin v1.9.0
+	github.com/golang-jwt/jwt/v4 v4.5.0
 	golang.org/x/exp v0.0.0-20230303215020-44a13b063f3e
 )
 

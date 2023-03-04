@@ -12,6 +12,30 @@ import (
 var store = make(map[string]helper.KeyValue)
 
 /**
+ * Login at /api/login by posting {"Username": "{username}", "Password": "{password}"}
+ */
+func login(ctxt *gin.Context) {
+	var account helper.Account
+
+	var err error
+	if err = ctxt.BindJSON(&account); err != nil {
+		ctxt.JSON(http.StatusBadRequest, gin.H{"error:": err.Error()})
+		return
+	}
+
+	if account.Username == helper.AdminUser && account.Password == helper.AdminPassword {
+		token, tokenErr := jwtservice.generateToken(account.Username)
+		if tokenErr != nil {
+			ctxt.JSON(http.StatusBadRequest, gin.H{"error": tokenErr.Error()})
+			return
+		}
+		ctxt.JSON(http.StatusOK, gin.H{"token": token})
+		return
+	}
+	ctxt.JSON(http.StatusBadRequest, gin.H{"error": "The username or password is incorrect"})
+}
+
+/**
  * Store key-value json struct in the store map
  * {
  *	 "key": "{key}",
@@ -19,6 +43,8 @@ var store = make(map[string]helper.KeyValue)
  * }
  */
 func storeKeyValue(ctxt *gin.Context) {
+	jwtservice.validateJwt(ctxt)
+
 	var keyValuePair helper.KeyValue
 
 	if err := ctxt.BindJSON(&keyValuePair); err != nil {
@@ -35,6 +61,8 @@ func storeKeyValue(ctxt *gin.Context) {
  * Return all KeyValue pairs as a JSON array of key-value structs
  */
 func getAllKeyValuePairs(ctxt *gin.Context) {
+	jwtservice.validateJwt(ctxt)
+
 	mapVals := maps.Values(store)
 	log.Printf("Retrieving all key-value pairs: %s\n", mapVals)
 	ctxt.IndentedJSON(http.StatusOK, mapVals)
@@ -44,6 +72,8 @@ func getAllKeyValuePairs(ctxt *gin.Context) {
  * Get specific key-value pair by key path variable
  */
 func getKeyValueByKey(ctxt *gin.Context) {
+	jwtservice.validateJwt(ctxt)
+
 	key := ctxt.Param("key")
 	if keyVal, ok := store[key]; ok {
 		log.Printf("Retrieiving Key-Value pair at key: %s\n", key)
@@ -56,6 +86,8 @@ func getKeyValueByKey(ctxt *gin.Context) {
 }
 
 func deleteKeyValueByKey(ctxt *gin.Context) {
+	jwtservice.validateJwt(ctxt)
+
 	key := ctxt.Param("key")
 	if keyVal, ok := store[key]; ok {
 		log.Printf("Deleting value at key: %s\n", key)
@@ -69,6 +101,9 @@ func deleteKeyValueByKey(ctxt *gin.Context) {
 
 func main() {
 	router := gin.Default()
+
+	// Login endpoint
+	router.POST("/api/login", login)
 
 	// KV store
 	router.POST("/api/key", storeKeyValue)
