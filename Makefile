@@ -1,4 +1,4 @@
-all: clean client server test
+all: clean perms client server test
 
 clean:
 	rm -rf build
@@ -8,6 +8,9 @@ cleanCli:
 
 cleanServ:
 	rm -rf build/server
+
+perms:
+	chmod -R 755 scripts
 
 client:
 	mkdir -p build/client/scripts
