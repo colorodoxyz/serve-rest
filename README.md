@@ -9,6 +9,8 @@ Expected Key-Value struct:
 ## Testing
 To simplify the build, deploy, and test process, a docker-compose.yml file and Makefile were provied.
 
+Aside from a docker installation being present on the system, there should be very little required from the user.
+
 Run `make all` to perform testing. If specific Key-Value pairs to test are desired, there are jsons present in the testingJsons directory at the repository root.
 
 test_set.json contains the Key-Value json structures to be created on the endpoint first and validated that the POST endpoint at `/api/keys` is functioning as expected.
